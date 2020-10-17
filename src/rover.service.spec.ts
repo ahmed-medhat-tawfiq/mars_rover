@@ -82,11 +82,11 @@ describe('RoverService [/rover]', () => {
     /* check https://drive.google.com/file/d/1bcVDtc0COSt40wdf66BL54WH9W5MqVvj/view LFFBFFFFL Diagram*/
     it('Should Move And Go Back to same position cause of blocked direction', () => {
       (<any> roverService).position = { x_axis: 0, y_axis: 0, direction: Direction.NORTH };
-      (<any> roverService).obstacles = new Set(['0,1', '-1,1', '-3,0', '-2,-1', '-2,2', '-3,1', '-1,1', '3,0']);
+      (<any> roverService).obstacles = new Set(['0,1', '-1,1', '-3,0', '-2,-1', '-2,2', '-3,1', '-1,1', '2,0']);
 
       const command = roverService.getCommand();
 
-      expect(command).to.be.deep.equals('LFFRRFFFL');
+      expect(command).to.be.deep.equals('LFFLLFFFL');
     });
 
     it('Should Failed to Move non exist Rover', () => {
