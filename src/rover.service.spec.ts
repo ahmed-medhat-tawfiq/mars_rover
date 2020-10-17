@@ -8,6 +8,7 @@ describe('RoverService [/rover]', () => {
 
   beforeEach(() => {
     roverService = new RoverService();
+    (<any> roverService).logger.disabled = true;
   });
 
   describe('create', () => {
@@ -77,6 +78,7 @@ describe('RoverService [/rover]', () => {
       const command = roverService.getCommand();
 
       expect(command).to.be.deep.equals('LFFRFLFFF');
+      roverService.move('LFFRFLFFF')
     });
 
     /* check https://drive.google.com/file/d/1bcVDtc0COSt40wdf66BL54WH9W5MqVvj/view LFFBFFFFL Diagram*/
@@ -87,6 +89,7 @@ describe('RoverService [/rover]', () => {
       const command = roverService.getCommand();
 
       expect(command).to.be.deep.equals('LFFLLFFFL');
+      roverService.move('LFFLLFFFL')
     });
 
     it('Should Failed to Move non exist Rover', () => {

@@ -1,3 +1,4 @@
+import { LoggerService } from './Logger/logger.service';
 import { Axis, Command, Direction } from './rover.enums';
 import { IClosedPositions, IOneMovementStep, IPosition, IAxisesSlopes } from './rover.interfaces';
 
@@ -6,15 +7,20 @@ export class RoverService {
   private readonly maxCommandLength: number;
   private readonly directions: Direction[];
   private readonly obstacles: Set<string>;
+  private readonly logger: LoggerService;
 
   constructor() {
     this.maxCommandLength = 9;
     this.directions = [Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST];
     this.obstacles = new Set(['1,4', '3,5', '7,4']);
+
+    /* TODO:  use Framework support IOC or use inversify to make LoggerService injected in RoverService by constructor as a singleton instance */
+    this.logger = new LoggerService('RoverService');
   }
 
   create(position: IPosition) {
     this.position = position;
+    this.logger.info(`[create] Rover is Created Successfully [(${position.x_axis}, ${position.y_axis}) ${position.direction}]`);
   }
 
   /* Validate command to check if there is not collection then move rover to the final position */
@@ -42,15 +48,18 @@ export class RoverService {
             break;
         
           default:
+            this.logger.error(`[move] Invalid Command ${cmd} in ${commands}`);
             throw Error(`Invalid Command ${cmd} in ${commands}`);
         }
       }
 
       this.position = newPosition;
 
+      this.logger.info(`[create] Rover Position is Updated to [(${newPosition.x_axis}, ${newPosition.y_axis}) ${newPosition.direction}]`);
       return newPosition;
     }
     else {
+      this.logger.error('[move] Rover not created to move');
       throw Error('Rover not created to move');
     }
   }
@@ -62,7 +71,10 @@ export class RoverService {
       let closedPositions = this.getClosedPositions(currentPosition);
       const isRoverCanMove = this.canMove(closedPositions);
 
-      if (!isRoverCanMove) throw Error('Rover is surrounded with obstacles');
+      if (!isRoverCanMove) {
+        this.logger.error('[getCommand] Rover is surrounded with obstacles');
+        throw Error('Rover is surrounded with obstacles');
+      }
 
       while (currentCommand.length < this.maxCommandLength) {
         const { command, position } = this.moveCommandOneStep(currentPosition, closedPositions, currentCommand);
@@ -75,6 +87,7 @@ export class RoverService {
       return currentCommand
     }
     else {
+      this.logger.error('[getCommand] Rover not created to move');
       throw Error('Rover not created to move');
     }
   }
