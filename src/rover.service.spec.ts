@@ -86,7 +86,7 @@ describe('RoverService [/rover]', () => {
 
       const command = roverService.getCommand();
 
-      expect(command).to.be.deep.equals('LFFBFFFFL');
+      expect(command).to.be.deep.equals('LFFRRFFFL');
     });
 
     it('Should Failed to Move non exist Rover', () => {
