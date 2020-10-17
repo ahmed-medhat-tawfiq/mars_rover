@@ -69,6 +69,7 @@ describe('RoverService [/rover]', () => {
       expect(command).to.be.deep.equals('FFFFFFFFF');
     });
 
+    /* check https://drive.google.com/file/d/1bcVDtc0COSt40wdf66BL54WH9W5MqVvj/view LFFRFLFFF Diagram*/
     it('Should Move Forward Between obstacles', () => {
       (<any> roverService).position = { x_axis: 0, y_axis: 0, direction: Direction.NORTH };
       (<any> roverService).obstacles = new Set(['0,1', '-1,1', '-3,0', '-2,-1', '-2,2', '-3,2', '-1,1']);
@@ -78,6 +79,7 @@ describe('RoverService [/rover]', () => {
       expect(command).to.be.deep.equals('LFFRFLFFF');
     });
 
+    /* check https://drive.google.com/file/d/1bcVDtc0COSt40wdf66BL54WH9W5MqVvj/view LFFBFFFFL Diagram*/
     it('Should Move And Go Back to same position cause of blocked direction', () => {
       (<any> roverService).position = { x_axis: 0, y_axis: 0, direction: Direction.NORTH };
       (<any> roverService).obstacles = new Set(['0,1', '-1,1', '-3,0', '-2,-1', '-2,2', '-3,1', '-1,1', '3,0']);
